@@ -7,7 +7,9 @@ Run it for fun, or to help me experiment with NAT traversal and other new capabi
 Download on PlayStore, or build yourself. 
 
 To download the debug.log file from the app, use:
+
 `adb backup -f backup.ab org.lndroid.bitcoincore; dd if=backup.ab bs=4K iflag=skip_bytes skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar`
+
 You will have to confirm a backup operation on your phone. After that, the contents of .bitcoin directory will be in the backup.tar.
 
 ## Building
@@ -17,15 +19,22 @@ First you need to build the bitcoin-core binaries for Android. Among common buil
 First you need to build bitcoin dependencies:
 * Apply [this commit](https://github.com/autoconf-archive/autoconf-archive/pull/211/commits/0087595e99c8bb9a41f5c05a426b453c8d4d931c) to ./build-aux/m4/ax_boost_thread.m4.
 * Go to 'depends', read README. Choose you Android architecture (aarch64-linux-android and x86_64-linux-android are most common) and run something like:
-    ANDROID_SDK=/home/user/Android/Sdk ANDROID_NDK=/home/user/Android/Sdk/ndk-bundle make HOST=aarch64-linux-android ANDROID_API_LEVEL=28 ANDROID_TOOLCHAIN_BIN=/home/user/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
+
+`ANDROID_SDK=/home/user/Android/Sdk ANDROID_NDK=/home/user/Android/Sdk/ndk-bundle make HOST=aarch64-linux-android ANDROID_API_LEVEL=28 ANDROID_TOOLCHAIN_BIN=/home/user/Android/Sdk/ndk-
+bundle/toolchains/llvm/prebuilt/linux-x86_64/bin`
+
 - When depends are built, configure bitcoin core to use them:
-    ./configure --host=aarch64-linux-android --disable-wallet --with-gui=no --prefix=/home/user/bitcoin/depends/aarch64-linux-android
+
+`./configure --host=aarch64-linux-android --disable-wallet --with-gui=no --prefix=/home/user/bitcoin/depends/aarch64-linux-android`
+
 - Then make. What you get is bitcoind and bitcoin-cli compiled for your chosen arch.
 
 Now you can build this app with your compiled binaries:
 - Clone this repo and cd.
-- Create a lib directory for your chosen architecture. ARCH - one of names from [here](https://developer.android.com/ndk/guides/abis), most commonly arm64-v8a or x86_64.
-    mkdir app/src/main/jniLibs/$(ARCH)
+- Create a directory for your chosen architecture. ARCH - one of names from [here](https://developer.android.com/ndk/guides/abis), most commonly arm64-v8a or x86_64.
+
+`mkdir app/src/main/jniLibs/$(ARCH)`
+
 - Copy your bitcoind and bitcoin-cli into the dir created above *under names libbitcoind.so and libbitcoin-cli.so*. This is the only way to force Android Studio to bundle the binaries with the APK.
 - Edit build.gradle's 'abiFilters' to only include the archs you compiled.
 - Build the project. The built apk should will now include your bitcoin core binaries.
