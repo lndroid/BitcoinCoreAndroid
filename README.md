@@ -7,7 +7,7 @@ Run it for fun, or to help me experiment with NAT traversal and other new capabi
 Download on PlayStore, or build yourself. 
 
 To download the debug.log file from the app, use:
-    adb backup -f backup.ab org.lndroid.bitcoincore; dd if=backup.ab bs=4K iflag=skip_bytes skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar
+`adb backup -f backup.ab org.lndroid.bitcoincore; dd if=backup.ab bs=4K iflag=skip_bytes skip=24 | python -c "import zlib,sys;sys.stdout.write(zlib.decompress(sys.stdin.read()))" > backup.tar`
 You will have to confirm a backup operation on your phone. After that, the contents of .bitcoin directory will be in the backup.tar.
 
 ## Building
