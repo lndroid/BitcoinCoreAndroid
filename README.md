@@ -28,7 +28,7 @@ Now you can build this app with your compiled binaries:
 
 ## NAT traversal
 
-This app is built as a testing environment for NAT traversal capability that I'm working on. Essentially, we want the pruned nodes on mobile devices to be able to serve light clients (at night, when device is charging and has access to WiFi). For that we need NAT traversal built into the bitcoind.
+This app is built as a testing environment for NAT traversal capability that I'm working on. [Igor Cota](https://icota.github.com/) proposed the idea of 'sleeper nodes' on the LN [mailing list](https://lists.linuxfoundation.org/pipermail/lightning-dev/2020-May/002694.html). Essentially, we want the pruned nodes on mobile devices to be able to serve light clients (at night, when device is charging and has access to WiFi). For that we need NAT traversal built into the bitcoind.
 
 Here is brief overview of the problem:
 
