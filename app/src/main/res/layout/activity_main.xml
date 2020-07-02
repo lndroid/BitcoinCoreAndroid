@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintVertical_bias="0.0"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Daemon"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:id="@+id/start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toBottomOf="@id/status"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:id="@+id/stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stop"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@id/start"
+                app:layout_constraintStart_toEndOf="@id/start"
+                />
+
+            <CheckBox
+                android:id="@+id/autoStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Auto-start"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@id/start"
+                app:layout_constraintBottom_toBottomOf="@id/start"
+                app:layout_constraintStart_toEndOf="@id/stop"
+                />
+
+            <Button
+                android:id="@+id/cmdline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Command"
+                app:layout_constraintTop_toBottomOf="@id/start"
+                app:layout_constraintStart_toStartOf="@id/start"
+                />
+
+            <Button
+                android:id="@+id/config"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Config"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@id/cmdline"
+                app:layout_constraintStart_toEndOf="@id/cmdline"
+                />
+
+            <TextView
+                android:id="@+id/titleClient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Client"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                style="@style/TextAppearance.AppCompat.Large"
+                app:layout_constraintTop_toBottomOf="@id/cmdline"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <EditText
+                android:id="@+id/cmd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="100"
+                android:inputType="textMultiLine"
+                android:hint="Client command (like '-getinfo')"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/titleClient"
+                />
+
+            <Button
+                android:id="@+id/client"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start client"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toBottomOf="@id/cmd"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:id="@+id/getinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-getinfo"
+                android:textAllCaps="false"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@id/client"
+                app:layout_constraintStart_toEndOf="@id/client"
+                />
+
+            <Button
+                android:id="@+id/help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-help"
+                android:textAllCaps="false"
+                android:layout_marginStart="10dp"
+                app:layout_constraintTop_toTopOf="@id/getinfo"
+                app:layout_constraintStart_toEndOf="@id/getinfo"
+                />
+
+            <EditText
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textIsSelectable="true"
+                android:editable="false"
+                android:hint="Results"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/help"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
