@@ -23,6 +23,7 @@ Now you can build this app with your compiled binaries:
 - Create a lib directory for your chosen architecture. ARCH - one of names from [here](https://developer.android.com/ndk/guides/abis), most commonly arm64-v8a or x86_64.
     mkdir app/src/main/jniLibs/$(ARCH)
 - Copy your bitcoind and bitcoin-cli into the dir created above *under names libbitcoind.so and libbitcoin-cli.so*. This is the only way to force Android Studio to bundle the binaries with the APK.
+- Edit build.gradle's 'abiFilters' to only include the archs you compiled.
 - Build the project. The built apk should will now include your bitcoin core binaries.
 
 ## NAT traversal
