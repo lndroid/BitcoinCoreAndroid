@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 jniLibs
+.apk
+.aab

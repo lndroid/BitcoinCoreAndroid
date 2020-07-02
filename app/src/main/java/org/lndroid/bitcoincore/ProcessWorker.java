@@ -37,6 +37,12 @@ public class ProcessWorker {
 
         dir_ = Common.getBitcoinDir(ctx);
         libDir_ = ctx.getApplicationInfo().nativeLibraryDir;
+
+        File f = new File(dir_);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+
         command_ = new ArrayList<>();
         command_.add(libDir_+File.separator+module);
         command_.add("-datadir="+dir_);

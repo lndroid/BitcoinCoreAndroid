@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -15,6 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -127,6 +130,24 @@ public class MainActivity extends AppCompatActivity {
                             "Daemon will auto start when device is charging and on WiFi.", Toast.LENGTH_LONG).show();
             }
         });
+
+        printDir(getApplicationInfo().nativeLibraryDir, "");
+    }
+
+    private void printDir(String path, String prefix) {
+        File dir = new File(path);
+        String[] list = dir.list();
+        if (list != null) {
+            for(String p: list) {
+                File file = new File(path+File.separator+p);
+                if (file.isDirectory()) {
+                    Log.i(TAG, prefix+" d "+file.getAbsolutePath());
+                    printDir(file.getAbsolutePath(), prefix+" ");
+                } else {
+                    Log.i(TAG, prefix+" f "+file.getAbsolutePath()+" x "+file.canExecute());
+                }
+            }
+        }
     }
 
     private void client() {
