@@ -32,7 +32,7 @@ This app is built as a testing environment for NAT traversal capability that I'm
 
 Here is brief overview of the problem:
 
-The main problem with NAT is that it only allows outgoing connections: external endpoint (IP+port) is assigned to an internal endpoint when it connects to public internet. Incoming connections are blocked bcs NAT doesn't know which internal endpoint is targeted by this incoming packet. Our case migt be worse bcs if both peers that try to communicate are behind NAT, so no matter which party tries to connect - it won't work.
+The main problem with NAT is that it only allows outgoing connections: external endpoint (IP+port) is assigned to an internal endpoint when it connects to public internet. Incoming connections are blocked bcs NAT doesn't know which internal endpoint is targeted by this incoming packet. Our case might be worse bcs if both peers that try to communicate are behind NAT, so no matter which party tries to connect - it won't work.
 
 The main solution for 'both peers behind NAT' is 'hole-punching', specifically [TCP hole punching](https://en.wikipedia.org/wiki/TCP_hole_punching) in our case. It is basically this:
 - Get a predictable external endpoint by taking advantage of [default NAT behaviours](https://tools.ietf.org/html/rfc5382)
@@ -59,11 +59,11 @@ So, what needs to be done in bitcoin core is:
 
 Relay seems like the hardest problem, and essentially [STUN](https://tools.ietf.org/html/rfc5389) is the known solution. It's a known third-party server, to which all peers are connected (or rather 'send UDP packets once per minute'). When B wants to connect to A it sends a request to Relay, and Relay forwards the request to A, which passes through A's NAT bcs A is pinging the Relay and it's NAT keeps an address mapping.
 
-Initially, we could just build a simple open-source Relay server. Problem is: every peer needs to connect to it, which makes it a single-point of failure and centralization. If volunteers ran many copies of it then all nodes would either have to connect to all Relays or use some sharding. And if we take the sharding logic far enough we end up with a DHT (which could be built into the bitcoin core): each peer could store a 'mailbox' for a subset of network peers, those peers would keep connections to it and others could send requests-for-connection through the mailboxes.
+Initially, we could just build a simple open-source Relay server. Problem is: every peer needs to connect to it, which makes it a single-point of failure and centralization. If volunteers ran many copies of it then all nodes would either have to connect to all Relays or use some sharding. And if we take the sharding logic far enough we end up with a DHT (which could be built into the bitcoin core): each peer could store a 'mailbox' for a subset of network peers, those peers would keep connections to it and others could send requests-for-connection through the mailboxes. We could also try to come up with a way for public nodes both peers are connected to to act as matchmakers, although I'm skeptical due to privacy and scalability issues.
 
 I have implemented [bindconnect](https://github.com/brugeman/bitcoin/tree/bindconnect) and [inboundconnect](https://github.com/brugeman/bitcoin/tree/inboundconnect), and working on outboundaccept now. Then I will experiment with relay options. All these will be tested using this app and it's userbase.
 
-Join coding my efforts, or at least run the app :)
+Join my coding efforts, or at least run the app :)
 
 ## License
 
