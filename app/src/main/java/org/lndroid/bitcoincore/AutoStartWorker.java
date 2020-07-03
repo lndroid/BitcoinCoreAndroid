@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -31,12 +32,14 @@ public class AutoStartWorker extends androidx.work.ListenableWorker {
 
     private static final long WORK_INTERVAL = 15 * 60 * 1000; // 15 min
 
+    private Handler handler_;
     private CallbackToFutureAdapter.Completer<Result> completer_;
 
     private ServiceConnection connection_ = new ServiceConnection() {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
 
+            Log.i(TAG, "sending start command");
             Messenger daemon = new Messenger(service);
             try {
                 Message msg = Message.obtain(null, DaemonService.MSG_START);
@@ -45,11 +48,21 @@ public class AutoStartWorker extends androidx.work.ListenableWorker {
                 Log.e(TAG, "Failed to send to daemon: "+e.getLocalizedMessage());
             }
 
-            // we're done
-            AutoStartWorker.this.getApplicationContext().unbindService(connection_);
+            // pause to let daemon turn into foreground service so that
+            // OS wouldn't kill our process. we can't block the current thread
+            // bcs service will be started on the same thread
+            Log.i(TAG, "waiting for service to start");
+            handler_.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    // we're done
+                    Log.i(TAG, "done");
+                    AutoStartWorker.this.getApplicationContext().unbindService(connection_);
 
-            // ok
-            completer_.set(Result.success());
+                    // ok
+                    completer_.set(Result.success());
+                }
+            }, 5000);
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -63,6 +76,7 @@ public class AutoStartWorker extends androidx.work.ListenableWorker {
 
     public AutoStartWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
+        handler_ = new Handler(getApplicationContext().getMainLooper());
     }
 
     @NonNull

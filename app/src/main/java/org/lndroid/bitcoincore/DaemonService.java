@@ -29,6 +29,12 @@ import androidx.core.content.ContextCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -310,6 +316,28 @@ public class DaemonService extends Service {
 
         Log.i(TAG,"stopped");
 
+        // check if parent as killed and we have a detached child daemon now,
+        // this is bad and we should terminate the child ASAP
+/*        if (result.contains("Cannot obtain a lock on data directory")) {
+            // get pid of orphaned bitcoid
+            try {
+                java.lang.Process p = new ProcessBuilder("ps").start();
+                BufferedReader r = new BufferedReader(
+                        new InputStreamReader(p.getInputStream(), "UTF-8"));
+                String line;
+                while ((line = r.readLine()) != null) {
+                    if (line.contains("libbitcoind.so")) {
+
+                    }
+                }
+
+
+            } catch (IOException e) {
+                // do not loop/retry. just let
+                // bg worker retry starting the daemon
+            }
+        }
+*/
         // notify clients about status change
         notifyClients(MSG_STATUS, "Stopped");
 

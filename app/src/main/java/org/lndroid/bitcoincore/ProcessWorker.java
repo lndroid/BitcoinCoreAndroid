@@ -5,11 +5,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -109,8 +111,8 @@ public class ProcessWorker {
                     InputStream stdout = p.getInputStream();
                     InputStream stderr = p.getErrorStream();
 
-                    StringBuilder out = new StringBuilder();
-                    StringBuilder err = new StringBuilder();
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    ByteArrayOutputStream err = new ByteArrayOutputStream();
 
                     byte[] buf = new byte[256];
                     boolean alive = true;
@@ -119,12 +121,12 @@ public class ProcessWorker {
                             final int max = Math.min(stdout.available(), buf.length);
                             final int r = stdout.read(buf, 0, max);
                             if (!stdoutDevnull_)
-                                out.append(new String(buf, 0, r, "UTF-8"));
+                                out.write(buf, 0, r);
                         }
                         if (stderr.available() > 0) {
                             final int max = Math.min(stderr.available(), buf.length);
                             final int r = stderr.read(buf, 0, max);
-                            err.append(new String(buf, 0, r, "UTF-8"));
+                            err.write(buf, 0, r);
                         }
 
                         if (alive) {
@@ -140,10 +142,12 @@ public class ProcessWorker {
                         }
                     }
 
+                    byte[] data;
                     if (p.exitValue() != 0)
-                        result_.set(err.toString());
+                        data = err.toByteArray();
                     else
-                        result_.set(out.toString());
+                        data = out.toByteArray();
+                    result_.set(new String(data, 0, data.length, StandardCharsets.UTF_8));
 
                     Log.i(TAG, "process "+command_.get(0)+" done "+p.exitValue());
                     Log.i(TAG, "result "+result_.get());

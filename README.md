@@ -4,7 +4,7 @@ This app includes bitcoind and bitcoin-cli compiled for Android. All command lin
 
 Run it for fun, or to help me experiment with NAT traversal and other new capabilities. Please do not rely on this app to serve your wallet or you might lose all your funds.
 
-Download on PlayStore, or build yourself. 
+Download on [PlayStore](https://play.google.com/store/apps/details?id=org.lndroid.bitcoincore), or build yourself. 
 
 To download the debug.log file from the app, use:
 
