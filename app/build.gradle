@@ -7,8 +7,8 @@ android {
         applicationId "org.lndroid.bitcoincore"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 2
-        versionName '0.2'
+        versionCode 6
+        versionName '0.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
             // Specifies the ABI configurations of your native

@@ -368,18 +368,20 @@ public class DaemonService extends Service {
         } else if (statusJson.startsWith("Stopping")) {
             status_ = statusJson;
         } else {
-            status_ = "Error: bad status json";
             try {
                 JSONObject j = new JSONObject(statusJson);
                 int blocks = j.getInt("blocks");
-                int headers = j.getInt("headers");
-                double progress = j.getDouble("verificationprogress");
+                int headers = j.has("headers") ? j.getInt("headers") : 0;
+                double progress = j.has("verificationprogress") ? j.getDouble("verificationprogress") : 1.0;
                 if (progress < 0.99) {
                     status_ = "IBD " + String.format("%2.1f", progress * 100) + "% block " + blocks + " head " + headers;
-                } else {
+                } else if (headers > 0) {
                     status_ = "Block " + blocks + " head " + headers;
+                } else {
+                    status_ = "Block " + blocks;
                 }
             } catch (JSONException e) {
+                status_ = "Unknown state, check -getinfo";
             }
         }
     }

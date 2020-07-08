@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setTitle("BitcoinCore for Android v"+BuildConfig.VERSION_NAME);
+
         model_ = new ViewModelProvider(this).get(MainViewModel.class);
         model_.status().observe(this, new Observer<String>() {
             @Override
@@ -131,7 +133,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Log.i(TAG, "lib dir "+getApplicationInfo().nativeLibraryDir);
         printDir(getApplicationInfo().nativeLibraryDir, "");
+        Log.i(TAG, "files dir "+getFilesDir().getAbsolutePath());
     }
 
     private void printDir(String path, String prefix) {
